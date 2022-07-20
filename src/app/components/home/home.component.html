@@ -1,0 +1,42 @@
+<div class="container">
+    <div class="btn d-flex justify-content-end">
+        <button class="btn btn-primary" type="button" (click)="createInvoice()">Generate Invoice</button>
+    </div>
+    <table class="table table-hover table-striped table-bordered border-primary">
+        <thead class="bg-dark">
+            <tr>
+                <th>invoice#</th>
+                <th>date</th>
+                <th>name</th>
+                <th>address</th>
+                <th>telephone</th>
+                <th>description</th>
+                <th>price</th>
+                <th>quantity</th>
+                <th>total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let i of invoices" (click)="getInvoice(i.id)">
+                <td>{{ i.id }}</td>
+                <td>{{ i.date | date }}</td>
+                <td>{{ i.name }}</td>
+                <td>{{ i.address }}</td>
+                <td>{{ i.tel }}</td>
+                <td>{{ i.desc }}</td>
+                <td>{{ i.price }}</td>
+                <td>{{ i.quantity }}</td>
+                <td>{{ i.lineTotal }}</td>
+                <td>
+                    <div class="btn">
+                        <button class="btn btn-primary" type="button" (click)="preview()">view</button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<app-view-invoice class="view"></app-view-invoice>
+<div class="backdrop"></div>
