@@ -1,3 +1,4 @@
+
 <div class="container">
     <div class="btn d-flex justify-content-end">
         <button class="btn btn-primary" type="button" (click)="createInvoice()">Generate Invoice</button>
@@ -25,18 +26,31 @@
                 <td>{{ i.address }}</td>
                 <td>{{ i.tel }}</td>
                 <td>{{ i.desc }}</td>
-                <td>{{ i.price }}</td>
+                <td>{{ i.price | currency: 'R' }}</td>
                 <td>{{ i.quantity }}</td>
-                <td>{{ i.lineTotal }}</td>
+                <td>{{ i.lineTotal | currency: 'R' }}</td>
                 <td>
                     <div class="btn">
-                        <button class="btn btn-primary" type="button" (click)="preview()">view</button>
+                        <button class="btn btn-primary" type="button" (click)="preview(i)">view</button>
                     </div>
                 </td>
             </tr>
         </tbody>
     </table>
+    
 </div>
 
-<app-view-invoice class="view"></app-view-invoice>
-<div class="backdrop"></div>
+<div class="createPopupWindow" *ngIf="newInvoice">
+    <app-create-invoice (save)="save($event)" (close)="close($event)"></app-create-invoice>
+</div>
+<div class="viewPopupWindow" *ngIf="showInvoice">
+    <app-view-invoice [invoice]="selectedInvoice"></app-view-invoice>
+</div>
+
+<div *ngIf="showInvoice || newInvoice" class="backdrop" (click)="closePopup()"></div>
+<div class="over"></div>
+<div *ngIf="spinner" class="d-flex justify-content-center spinner">
+    <div  class="spinner-border text-warning" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>

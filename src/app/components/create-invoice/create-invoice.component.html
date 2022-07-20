@@ -1,1 +1,40 @@
-<p>create-invoice works!</p>
+<div class="container">
+    <div class="form">
+        <div class="container-fluid header">
+            <h5>Customer details</h5>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input [(ngModel)]="invoice.name" type="text" class="form-control" placeholder="Harry Maguire">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Address</label>
+            <input [(ngModel)]="invoice.address" type="text" class="form-control" placeholder="6 stock street">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Telephone Number</label>
+            <input [(ngModel)]="invoice.tel" type="tel" class="form-control" maxlength="20">
+        </div>
+        <div class="container-fluid header">
+            <h5>Invoice details</h5>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Item Description</label>
+            <input [(ngModel)]="invoice.desc" type="text" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Price</label>
+            <input [(ngModel)]="invoice.price" type="number" class="form-control" placeholder="0.00">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Quantity</label>
+            <input [(ngModel)]="invoice.quantity" type="tel" class="form-control">
+        </div>
+        <div class="btn justify-content-start">
+            <button type="button" class="btn btn-primary" (click)="submit()">Save</button>
+        </div>
+        <div class="btn justify-content-start">
+            <button type="button" class="btn btn-primary" (click)="cancel()">Cancel</button>
+        </div>
+    </div>
+</div>

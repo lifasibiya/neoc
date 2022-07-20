@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Customer, Product, Invoice, GetInvoice } from 'src/app/Models';
 import { environment } from '../../../environments/environment'
+import { ViewInvoiceComponent } from '../view-invoice/view-invoice.component';
 
 const domain = environment.baseUrl
 @Component({
@@ -13,14 +14,21 @@ export class HomeComponent implements OnInit {
 
   invoices: GetInvoice[] = []
   invoice: any = {};
-  constructor(private http: HttpClient) { }
+  selectedInvoice: any = {};
+  showInvoice: boolean = false;
+  newInvoice: boolean = false;
+  spinner: boolean = false;
+  constructor(private http: HttpClient) 
+  {
+  }
 
   async ngOnInit() {
     this.getAllInvoices();
   } 
   
-  preview = () => {
-    
+  preview = (selectedInvoice: any) => {
+    this.selectedInvoice = selectedInvoice;
+    this.showInvoice = true;
   }
 
   getAllInvoices = async () => {
@@ -30,28 +38,27 @@ export class HomeComponent implements OnInit {
 
   createInvoice = async () => {
 
-    const response = await this.post(this.invoice, 'customer/create');
-    console.log(response)
+    this.newInvoice = true
   }
 
-  checkCustomer = async () => {
+  checkCustomer = async (customer: any) => {
     const payload: Customer = {
-      'name': this.invoice['name'],
-      'address': this.invoice['address'],
-      'tel': this.invoice['tell']
+      'name': customer['name'],
+      'address': customer['address'],
+      'tel': customer['tel']
     }
 
-    this.invoice['customer'] = await this.post(payload, 'customer/create');
+    return await this.post(payload, 'customer/create');
     console.log(this.invoice['customer'])
   }
 
-  checkProduct = async () => {
+  checkProduct = async (product: any) => {
     const payload: Product = {
-      'desc': this.invoice['desc'],
-      'price': this.invoice['price']
+      'desc': product['desc'],
+      'price': product['price']
     }
     
-    this.invoice['product'] = await this.post(payload, 'product/create');
+    return await this.post(payload, 'product/create');
     console.log(this.invoice['product'])
   }
 
@@ -60,12 +67,55 @@ export class HomeComponent implements OnInit {
     console.log(this.invoice)
   }
 
+  save = async (invoice: any): Promise<any> => {
+    this.openSpinner();
+    const customerId = await this.checkCustomer({
+      'name': invoice['name'],
+      'address': invoice['address'],
+      'tel': invoice['tel']
+    })
+
+    const productId = await this.checkProduct({
+      'desc': invoice['desc'],
+      'price': invoice['price']
+    })
+
+    const payload = {
+      'customer': customerId,
+      'product': productId,
+      'quantity': invoice['quantity']
+    }
+    const response = await this.post(payload, 'invoice/create')
+    if (response) {
+      this.getAllInvoices()
+      this.closeSpinner();
+      this.closePopup();
+    }
+  }
+
+  close = (event: any) => {
+    this.newInvoice = event
+  }
+
+  closePopup = () => {
+    this.newInvoice = false
+    this.showInvoice = false
+  }
+
   post = async (payload: any, controller: any): Promise<any> => {
     return await this.http.post(`${domain}${controller}`, payload).toPromise()
   }
 
   get = async (controller: any): Promise<any> => {
     return await this.http.get(`${domain}${controller}`).toPromise()
+  }
+
+  openSpinner() {
+    this.spinner = true;
+  }
+
+  closeSpinner() {
+    this.spinner = false;
   }
 
 }

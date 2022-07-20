@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms'
 import { ViewInvoiceComponent } from './components/view-invoice/view-invoice.component';
 import { CreateInvoiceComponent } from './components/create-invoice/create-invoice.component'
 
@@ -18,7 +19,8 @@ import { CreateInvoiceComponent } from './components/create-invoice/create-invoi
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
